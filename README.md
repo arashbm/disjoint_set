@@ -1,7 +1,8 @@
 # disjoint\_set
 
 A simple implementation of disjoint-set data structure with union-by-size and
-path halving. Only works with `std::size_t` IDs, for now.
+path halving. Only works with any integral, unsigned that fits in a
+`std::size_t`.
 
 ## Usage
 
@@ -25,7 +26,7 @@ $ make && ./disjoint_tests
 #include <disjoint_set.hpp>
 
 int main() {
-  auto dis  = ds::disjoint_set(10);
+  auto dis  = ds::disjoint_set<size_t>(10);
 
   dis.merge(1, 2);
   dis.merge(3, 2);

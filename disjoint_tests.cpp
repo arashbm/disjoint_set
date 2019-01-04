@@ -10,7 +10,7 @@ using Catch::Matchers::Equals;
 using Catch::Matchers::UnorderedEquals;
 
 TEST_CASE( "initialises correctly", "[basics]" ) {
-  auto dis = ds::disjoint_set(10);
+  auto dis = ds::disjoint_set<size_t>(10);
 
   SECTION("representatives") {
     for (size_t i = 0; i < 10; i++)
@@ -33,7 +33,7 @@ TEST_CASE( "initialises correctly", "[basics]" ) {
 }
 
 TEST_CASE("basic usage", "[basics]" ) {
-  auto dis = ds::disjoint_set(10);
+  auto dis = ds::disjoint_set<size_t>(10);
 
   // [0, 1, 2, 3, 4] [5, 6, 7, 8] [9]
   dis.merge(0, 1);
@@ -78,7 +78,7 @@ TEST_CASE( "performance", "[basics]" ) {
 
   SECTION("does not scale horribly") {
     size_t n = 250'000;
-    auto dis = ds::disjoint_set(n);
+    auto dis = ds::disjoint_set<size_t>(n);
 
     std::random_device r;
     std::default_random_engine gen(r());
