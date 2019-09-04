@@ -1,10 +1,10 @@
-#include "catch.hpp"
-
 #include <algorithm>
 #include <chrono>
 #include <random>
 
-#include "disjoint_set.hpp"
+#include "catch.hpp"
+
+#include "../include/disjoint_set.hpp"
 
 using Catch::Matchers::Equals;
 using Catch::Matchers::UnorderedEquals;

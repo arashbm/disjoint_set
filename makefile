@@ -1,10 +1,58 @@
-CC = g++
+# object files, auto generated from source files
+OBJDIR := .o
+$(shell mkdir -p $(OBJDIR) >/dev/null)
+
+# dependency files, auto generated from source files
+DEPDIR := .d
+$(shell mkdir -p $(DEPDIR) >/dev/null)
+
+SRCDIR := src
+
 CXX = g++
-CXXFLAGS = -Werror -Wall -Wextra -O2 -funroll-loops -ffast-math -ftree-vectorize -mtune=native -std=c++14 -Wconversion -g
+CC = $(CXX)
+CXXFLAGS = -Werror -Wall -Wextra -Wconversion \
+					 -O3 \
+					 -std=c++14 \
+					 -g \
+					 -funroll-loops -ffast-math -ftree-vectorize -mtune=native \
+					 -Idep/catch2/include
 
-all: disjoint_tests
+LD = g++
 
-disjoint_tests: tests.o | disjoint_set.hpp
+DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 
-clean:
-		rm -f disjoint_tests.o
+COMPILE.c = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+POSTCOMPILE = @mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d && touch $@
+
+LINK.o = $(LD) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@
+
+all: tests
+
+tests: $(OBJDIR)/tests.o $(OBJDIR)/disjoint_tests.o
+	$(LINK.o)
+
+$(OBJDIR)/%.o : $(SRCDIR)/%.c
+$(OBJDIR)/%.o : $(SRCDIR)/%.c $(DEPDIR)/%.d
+	$(COMPILE.c) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
+
+$(OBJDIR)/%.o : $(SRCDIR)/%.cc
+$(OBJDIR)/%.o : $(SRCDIR)/%.cc $(DEPDIR)/%.d
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
+
+$(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+$(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(DEPDIR)/%.d
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
+
+$(OBJDIR)/%.o : $(SRCDIR)/%.cxx
+$(OBJDIR)/%.o : $(SRCDIR)/%.cxx $(DEPDIR)/%.d
+	$(COMPILE.cc) $(OUTPUT_OPTION) $<
+	$(POSTCOMPILE)
+
+$(DEPDIR)/%.d: ;
+.PRECIOUS: $(DEPDIR)/%.d
+
+include $(wildcard $(DEPDIR)/*.d)
