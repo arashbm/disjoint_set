@@ -14,7 +14,7 @@ $ git clone https://github.com/arashbm/disjoint_set.git
 
 Run the tests:
 ```bash
-$ make && ./disjoint_tests
+$ make && ./tests
 ```
 
 ## Example
@@ -50,9 +50,9 @@ Assuming you cloned this library in `/path/to/disjoint_set`  you can compile
 `example.cpp` with:
 
 ```bash
-$ g++ -std=c++14 -I/path/to/disjoint_set  -c -o example.o example.cpp
+$ g++ -std=c++14 -I/path/to/disjoint_set/include  -c -o example.o example.cpp
 $ g++ example.o -o example
 
 ```
 
-Check out the tests (in `disjoint_tests.cpp`) for more examples.
+Check out the tests (in `src/disjoint_tests.cpp`) for more examples.
