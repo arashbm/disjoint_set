@@ -1,3 +1,6 @@
+#ifndef INCLUDE_DISJOINT_SET_HPP_
+#define INCLUDE_DISJOINT_SET_HPP_
+
 #include<vector>
 #include<unordered_map>
 
@@ -96,3 +99,5 @@ namespace ds {
       }
   };
 }
+
+#endif // INCLUDE_DISJOINT_SET_HPP_
