@@ -23,15 +23,14 @@ $ make && ./tests
 // in "example.cpp"
 
 #include <iostream>
-#include <disjoint_set.hpp>
+#include <ds/disjoint_set.hpp>
 
 int main() {
-  auto dis  = ds::disjoint_set<size_t>(10);
+  ds::disjoint_set<size_t> dis(10);
 
   dis.merge(1, 2);
   dis.merge(3, 2);
   dis.merge(0, 5);
-
 
   // get all the sets with their representative
   std::unordered_map<size_t, std::vector<size_t>> sets = dis.sets();
@@ -50,8 +49,8 @@ Assuming you cloned this library in `/path/to/disjoint_set`  you can compile
 `example.cpp` with:
 
 ```bash
-$ g++ -std=c++14 -I/path/to/disjoint_set/include  -c -o example.o example.cpp
-$ g++ example.o -o example
+$ g++ -std=c++14 -I/path/to/disjoint_set/include -o example example.cpp
+$ ./example
 
 ```
 

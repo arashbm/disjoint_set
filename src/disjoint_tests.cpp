@@ -1,16 +1,16 @@
 #include <algorithm>
-#include <chrono>
+#include <chrono>  // NOLINT(build/c++11)
 #include <random>
 
 #include "catch.hpp"
 
-#include "../include/disjoint_set.hpp"
+#include "../include/ds/disjoint_set.hpp"
 
 using Catch::Matchers::Equals;
 using Catch::Matchers::UnorderedEquals;
 
-TEST_CASE( "initialises correctly", "[basics]" ) {
-  auto dis = ds::disjoint_set<size_t>(10);
+TEST_CASE("initialises correctly", "[basics]") {
+  ds::disjoint_set<size_t> dis(10);
 
   SECTION("representatives") {
     for (size_t i = 0; i < 10; i++)
@@ -29,11 +29,10 @@ TEST_CASE( "initialises correctly", "[basics]" ) {
     auto sets = dis.sets(false);
     REQUIRE(sets.size() == 0);
   }
-
 }
 
-TEST_CASE("basic usage", "[basics]" ) {
-  auto dis = ds::disjoint_set<size_t>(10);
+TEST_CASE("basic usage", "[basics]") {
+  ds::disjoint_set<size_t> dis(10);
 
   // [0, 1, 2, 3, 4] [5, 6, 7, 8] [9]
   dis.merge(0, 1);
@@ -74,46 +73,29 @@ TEST_CASE("basic usage", "[basics]" ) {
   }
 }
 
-TEST_CASE( "performance", "[basics]" ) {
-
+TEST_CASE("performance", "[basics]") {
   SECTION("does not scale horribly") {
-    size_t n = 250'000;
-    auto dis = ds::disjoint_set<size_t>(n);
+    size_t n = 500'000;
+    ds::disjoint_set<size_t> dis(n);
 
     std::random_device r;
     std::default_random_engine gen(r());
-    std::uniform_int_distribution<size_t> rand(0, n);
+    std::uniform_int_distribution<size_t> rand(0, n-1);
 
-    for (size_t i = 0; i < 1'000; i++)
+    for (size_t i = 0; i < 100'000; i++)
       dis.merge(rand(gen), rand(gen));
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (size_t i = 1'000; i < 1'300; i++)
+    for (size_t i = 100'000; i < 100'300; i++)
       dis.merge(rand(gen), rand(gen));
 
     auto stop = std::chrono::high_resolution_clock::now();
 
     std::chrono::high_resolution_clock::duration total_time1 = stop - start;
 
-    INFO( "set sizes: " << dis.sets(false).size() <<
+    INFO("set sizes: " << dis.sets(false).size() <<
         " " << dis.sets(true).size() << " time: " << total_time1.count());
-
-    for (size_t i = 1'300; i < 100'000; i++)
-      dis.merge(rand(gen), rand(gen));
-
-
-    start = std::chrono::high_resolution_clock::now();
-
-    for (size_t i = 100'000; i < 100'300; i++)
-      dis.merge(rand(gen), rand(gen));
-
-    stop = std::chrono::high_resolution_clock::now();
-
-    std::chrono::high_resolution_clock::duration total_time2 = stop - start;
-
-    INFO( "set sizes: " << dis.sets(false).size() <<
-        " " << dis.sets(true).size() << " time: " << total_time2.count());
 
     for (size_t i = 100'300; i < 1'000'000; i++)
       dis.merge(rand(gen), rand(gen));
@@ -126,9 +108,25 @@ TEST_CASE( "performance", "[basics]" ) {
 
     stop = std::chrono::high_resolution_clock::now();
 
+    std::chrono::high_resolution_clock::duration total_time2 = stop - start;
+
+    INFO("set sizes: " << dis.sets(false).size() <<
+        " " << dis.sets(true).size() << " time: " << total_time2.count());
+
+    for (size_t i = 1'000'300; i < 10'000'000; i++)
+      dis.merge(rand(gen), rand(gen));
+
+
+    start = std::chrono::high_resolution_clock::now();
+
+    for (size_t i = 10'000'000; i < 10'000'300; i++)
+      dis.merge(rand(gen), rand(gen));
+
+    stop = std::chrono::high_resolution_clock::now();
+
     std::chrono::high_resolution_clock::duration total_time3 = stop - start;
 
-    INFO( "set sizes: " << dis.sets(false).size() <<
+    INFO("set sizes: " << dis.sets(false).size() <<
         " " << dis.sets(true).size() << " time: " << total_time3.count());
 
     REQUIRE((double)total_time2.count()/(double)total_time1.count() < 1.05);
