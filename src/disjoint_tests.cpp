@@ -2,9 +2,9 @@
 #include <chrono>  // NOLINT(build/c++11)
 #include <random>
 
-#include "catch.hpp"
+#include <catch2/catch.hpp>
 
-#include "../include/ds/disjoint_set.hpp"
+#include <ds/disjoint_set.hpp>
 
 using Catch::Matchers::Equals;
 using Catch::Matchers::UnorderedEquals;
