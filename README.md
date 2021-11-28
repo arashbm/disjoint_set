@@ -44,7 +44,7 @@ command `find_package` to their proper location, e.g. to `/usr/share`.
 
 ## Example
 
-```
+```cpp
 // in "example.cpp"
 
 #include <iostream>
