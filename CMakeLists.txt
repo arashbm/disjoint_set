@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 
 project(disjoint_set LANGUAGES CXX VERSION 0.1)
 
@@ -22,7 +22,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(tests src/tests.cpp src/disjoint_tests.cpp)
+add_executable(tests EXCLUDE_FROM_ALL src/tests.cpp src/disjoint_tests.cpp)
 target_link_libraries(tests PRIVATE ${PROJECT_NAME})
 target_link_libraries(tests PRIVATE Catch2::Catch2)
 target_compile_options(tests PRIVATE
