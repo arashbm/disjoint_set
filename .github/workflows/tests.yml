@@ -21,6 +21,6 @@ jobs:
       run: |
         mkdir build
         cmake -Bbuild -H.
-        cmake --build build/ --target all
+        cmake --build build/ --target tests
     - name: Run tests
       run: build/tests
