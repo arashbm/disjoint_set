@@ -17,7 +17,7 @@ to. The final collection of sets each detemine a connected component.
 
 ## Installation
 
-This package relies on cmake. Make sure a moderatly recent version (3.10 or
+This package relies on cmake. Make sure a moderatly recent version (3.14 or
 newer) is already installed. You should also have a C++ compiler with C++14
 support. We regularly test this with GCC 8.4 so anything more recent should do.
 
@@ -28,8 +28,8 @@ $ cd disjoint_set
 $ mkdir build  # make directory to build in
 $ cd build
 $ cmake ..
-$ cmake --build . --target tests  # build the tests
-$ ./tests
+$ cmake --build . --target disjoint_set_tests  # build the tests
+$ ./disjoint_set_tests
 ```
 
 At this point you should see "All tests passed" if all the steps are successful.
