@@ -1,7 +1,7 @@
 # `ds:disjoint_set`: c++14 disjoint-set data structure [![Actions Status](https://github.com/arashbm/disjoint_set/workflows/Tests/badge.svg)](https://github.com/arashbm/disjoint_set/actions)
 
 A simple implementation of [disjoint-set data structure][ds] with union-by-size
-and path halving. Only works with any integral, unsigned type that fits in a
+and path halving. Works with any integral, unsigned type that fits in a
 `std::size_t`.
 
 A disjoint-set data structure, also known as union-find or merge-find data
@@ -15,18 +15,32 @@ to. The final collection of sets each detemine a connected component.
 
 [ds]: https://en.wikipedia.org/wiki/Disjoint-set_data_structure
 
-## Usage
+## Installation
 
-Clone the library:
+This package relies on cmake. Make sure a moderatly recent version (3.10 or
+newer) is already installed. You should also have a C++ compiler with C++14
+support. We regularly test this with GCC 8.4 so anything more recent should do.
 
+Here is how to build and run the tests:
 ```bash
 $ git clone https://github.com/arashbm/disjoint_set.git
+$ cd disjoint_set
+$ mkdir build  # make directory to build in
+$ cd build
+$ cmake ..
+$ cmake --build . --target tests  # build the tests
+$ ./tests
 ```
 
-Run the tests:
+At this point you should see "All tests passed" if all the steps are successful.
+You can continue by install the library on your system:
 ```bash
-$ make check
+cmake --build . --target install
 ```
+This final step might require admin previlages. It basically just copies the
+`include/` directoy to its proper location on your system, e.g. to
+`/usr/include` on linux. It also copies the cmake files require by the cmake
+command `find_package` to their proper location, e.g. to `/usr/share`.
 
 ## Example
 
@@ -67,9 +81,17 @@ int main() {
 
 Assuming you cloned this library in `/path/to/disjoint_set`  you can compile
 `example.cpp` with:
-
 ```bash
 $ g++ -std=c++14 -I/path/to/disjoint_set/include -o example example.cpp
+```
+
+If you have installed the library as instructed previously, you skip `-I`
+option:
+```bash
+$ g++ -std=c++14 -o example example.cpp
+```
+
+```bash
 $ ./example
 7 disjoint sets
 2 sets without the singletons
