@@ -3,24 +3,37 @@ on: [push, pull_request]
 
 jobs:
   build:
+    name: Tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-12]
 
     steps:
-    - name: Install GCC 8
+    - name: Install Pre-requisits on ubuntu
+      if: ${{ startsWith(matrix.os, 'ubuntu') }}
       run: |
         sudo apt-get -qy update
-        sudo apt-get install g++-8
-    - uses: actions/checkout@v2
-    - name: g++ version
-      run: g++-8 -v
+        sudo apt-get install g++ ninja-build cmake
+        ninja --version
+        cmake --version
+        g++ --version
+
+    - name: Install dependencies on windows
+      if: ${{ startsWith(matrix.os, 'windows') }}
+      run: |
+        choco install ninja cmake
+        cmake --version
+
+    - uses: actions/checkout@v3
     - name: cmake build
-      env:
-        CC: g++-8
-        CXX: g++-8
       run: |
         mkdir build
-        cmake -Bbuild -H.
+        cmake -Bbuild -S.
         cmake --build build/ --target disjoint_set_tests
+
     - name: Run tests
-      run: build/disjoint_set_tests
+      working-directory: build
+      run: ctest -C Debug --output-on-failure
