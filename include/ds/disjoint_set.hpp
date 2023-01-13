@@ -1,11 +1,12 @@
 #ifndef INCLUDE_DS_DISJOINT_SET_HPP_
 #define INCLUDE_DS_DISJOINT_SET_HPP_
 
-#include<vector>
-#include<unordered_map>
+#include <cstddef>
+#include <vector>
+#include <unordered_map>
 
 namespace ds {
-  template <typename IdxT = size_t>
+  template <typename IdxT = std::size_t>
   class disjoint_set {
     static_assert(std::is_unsigned<IdxT>::value,
         "IdxT should be an unsigned type");

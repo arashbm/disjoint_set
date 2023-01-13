@@ -2,9 +2,9 @@ namespace ds {
   template <typename IdxT>
   disjoint_set<IdxT>::disjoint_set(IdxT n)
   : parent(n), sizes(n, 1) {
-    if (n > std::numeric_limits<size_t>::max())
+    if (n > std::numeric_limits<std::size_t>::max())
       throw std::invalid_argument(
-          "maximum number of items should fit in size_t");
+          "maximum number of items should fit in std::size_t");
 
     for (IdxT i = 0; i < n; i++)
       parent[i] = i;
