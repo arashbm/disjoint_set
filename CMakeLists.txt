@@ -21,27 +21,27 @@ target_include_directories(
   $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}>/include/
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-Include(FetchContent)
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG v3.2.1)
-
-FetchContent_MakeAvailable(Catch2)
-list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
-
-add_executable(${PROJECT_NAME}_tests EXCLUDE_FROM_ALL src/tests.cpp)
-target_link_libraries(${PROJECT_NAME}_tests PRIVATE
-  ${PROJECT_NAME} Catch2::Catch2WithMain)
-if(NOT MSVC)
-  target_compile_options(${PROJECT_NAME}_tests PRIVATE
-    -Werror -Wall -Wextra -Wconversion -Wsign-conversion
-    -fsanitize=address,undefined -g)
-  target_link_options(${PROJECT_NAME}_tests PRIVATE
-    -fsanitize=address,undefined)
-endif()
-
 if (is_standalone)
+  Include(FetchContent)
+  FetchContent_Declare(
+    Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG v3.7.1)
+
+  FetchContent_MakeAvailable(Catch2)
+  list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+
+  add_executable(${PROJECT_NAME}_tests EXCLUDE_FROM_ALL src/tests.cpp)
+  target_link_libraries(${PROJECT_NAME}_tests PRIVATE
+    ${PROJECT_NAME} Catch2::Catch2WithMain)
+  if(NOT MSVC)
+    target_compile_options(${PROJECT_NAME}_tests PRIVATE
+      -Werror -Wall -Wextra -Wconversion -Wsign-conversion
+      -fsanitize=address,undefined -g)
+    target_link_options(${PROJECT_NAME}_tests PRIVATE
+      -fsanitize=address,undefined)
+  endif()
+
   include(CTest)
   include(Catch)
   catch_discover_tests(${PROJECT_NAME}_tests)
